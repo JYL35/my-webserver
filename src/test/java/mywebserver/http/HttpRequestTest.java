@@ -7,15 +7,15 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class HttpRequestTest {
 
     @DisplayName("요청이 비어있거나 null이면 예외가 발생한다")
     @ParameterizedTest
-    @NullAndEmptySource
+    @ValueSource(strings = {"", " ", "\t", "  \r\n"})
     void HttpRequest_NullOrEmptyStartLine_ThrowException(String startLine) {
-        InputStream in = createRequest(startLine + "Host: localhost\r\n\r\n");
+        InputStream in = createRequest(startLine);
 
         assertThatThrownBy(() -> new HttpRequest(in))
                 .isInstanceOf(IllegalArgumentException.class)
