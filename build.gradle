@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group = 'mywebserver'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("org.assertj:assertj-core:3.23.1")
+}
+
+test {
+    useJUnitPlatform()
+}
