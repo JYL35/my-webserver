@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import mywebserver.util.ErrorMessage;
 
 public class HttpRequest {
     private final String httpMethod;
@@ -20,7 +21,7 @@ public class HttpRequest {
             this.httpMethod = tokens[0];
             this.path = tokens[1];
         } catch (IOException e) {
-            throw new RuntimeException("HTTP 요청 실패", e);
+            throw new RuntimeException(ErrorMessage.HTTP_REQUEST_FAILED.getMessage(), e);
         }
     }
 
@@ -30,14 +31,14 @@ public class HttpRequest {
 
     private void validateStartLine(String startLine) {
         if (startLine == null || startLine.isBlank()) {
-            throw new IllegalArgumentException("유효하지 않은 시작 라인입니다");
+            throw new IllegalArgumentException(ErrorMessage.HTTP_START_LINE_BLANK.getMessage());
         }
     }
 
     private String[] parseStartLine(String startLine) {
         String[] tokens = startLine.split(" ");
         if (tokens.length < 2) {
-            throw new IllegalArgumentException("유효하지 않은 시작 라인입니다");
+            throw new IllegalArgumentException(ErrorMessage.HTTP_START_LINE_INCORRECT.getMessage());
         }
         return tokens;
     }

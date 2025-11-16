@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import mywebserver.util.ErrorMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -21,7 +22,7 @@ public class HttpRequestTest {
 
         assertThatThrownBy(() -> new HttpRequest(in))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 시작 라인입니다");
+                .hasMessageContaining(ErrorMessage.HTTP_START_LINE_BLANK.getMessage());
     }
 
     @DisplayName("메소드와 경로를 올바르게 파싱한다")
