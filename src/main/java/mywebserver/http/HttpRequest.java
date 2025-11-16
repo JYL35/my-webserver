@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import mywebserver.util.ErrorMessage;
 
 public class HttpRequest {
-    private final String httpMethod;
+    private final HttpMethod httpMethod;
     private final String path;
 
     public HttpRequest(InputStream inputStream) {
@@ -18,7 +18,7 @@ public class HttpRequest {
             validateStartLine(startLine);
 
             String[] tokens = parseStartLine(startLine);
-            this.httpMethod = tokens[0];
+            this.httpMethod = HttpMethod.from(tokens[0]);
             this.path = tokens[1];
         } catch (IOException e) {
             throw new RuntimeException(ErrorMessage.HTTP_REQUEST_FAILED.getMessage(), e);
@@ -43,7 +43,7 @@ public class HttpRequest {
         return tokens;
     }
 
-    public String getMethod() {
+    public HttpMethod getMethod() {
         return httpMethod;
     }
 
