@@ -19,6 +19,8 @@ public class HttpRequest {
 
             String[] tokens = parseStartLine(startLine);
             this.httpMethod = HttpMethod.from(tokens[0]);
+
+            validatePath(tokens[1]);
             this.path = tokens[1];
         } catch (IOException e) {
             throw new RuntimeException(ErrorMessage.HTTP_REQUEST_FAILED.getMessage(), e);
@@ -35,6 +37,12 @@ public class HttpRequest {
         }
     }
 
+    private void validatePath(String path) {
+        if (!path.startsWith("/")) {
+            throw new IllegalArgumentException(ErrorMessage.HTTP_PATH_INVALID.getMessage());
+        }
+    }
+
     private String[] parseStartLine(String startLine) {
         String[] tokens = startLine.split(" ");
         if (tokens.length < 2) {
@@ -43,8 +51,8 @@ public class HttpRequest {
         return tokens;
     }
 
-    public HttpMethod getMethod() {
-        return httpMethod;
+    public String getMethod() {
+        return httpMethod.name();
     }
 
     public String getPath() {
