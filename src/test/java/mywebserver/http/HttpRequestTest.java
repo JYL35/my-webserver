@@ -53,6 +53,18 @@ public class HttpRequestTest {
                 .hasMessage(ErrorMessage.HTTP_METHOD_INVALID.getMessage());
     }
 
+    @DisplayName("유효하지 않은 Path인 경우 예외가 발생한다")
+    @ParameterizedTest
+    @ValueSource(strings = {"GET a/ HTTP/1.1", "DELETE index.html HTTP/1.1", "POST ./index.html HTTP/1.1"})
+    void HttpRequest_InvalidPath_ThrowException(String startLine) {
+        String requestString = startLine + "\r\n\r\n";
+        InputStream in = createRequest(requestString);
+
+        assertThatThrownBy(() -> new HttpRequest(in))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ErrorMessage.HTTP_PATH_INVALID.getMessage());
+    }
+
     private InputStream createRequest(String requestString) {
         return new ByteArrayInputStream(requestString.getBytes(StandardCharsets.UTF_8));
     }
