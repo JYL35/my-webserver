@@ -7,11 +7,18 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class HttpRequest {
+    private final String httpMethod;
+    private final String path;
 
     public HttpRequest(InputStream inputStream) {
         try (BufferedReader br = createBufferedReader(inputStream)) {
             String startLine = br.readLine();
+
             validateStartLine(startLine);
+
+            String[] tokens = parseStartLine(startLine);
+            this.httpMethod = tokens[0];
+            this.path = tokens[1];
         } catch (IOException e) {
             throw new RuntimeException("HTTP 요청 실패", e);
         }
@@ -25,5 +32,21 @@ public class HttpRequest {
         if (startLine == null || startLine.isBlank()) {
             throw new IllegalArgumentException("유효하지 않은 시작 라인입니다");
         }
+    }
+
+    private String[] parseStartLine(String startLine) {
+        String[] tokens = startLine.split(" ");
+        if (tokens.length < 2) {
+            throw new IllegalArgumentException("유효하지 않은 시작 라인입니다");
+        }
+        return tokens;
+    }
+
+    public String getMethod() {
+        return httpMethod;
+    }
+
+    public String getPath() {
+        return path;
     }
 }
