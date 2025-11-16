@@ -22,7 +22,7 @@ public class HttpRequestTest {
 
         assertThatThrownBy(() -> new HttpRequest(in))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(ErrorMessage.HTTP_START_LINE_BLANK.getMessage());
+                .hasMessage(ErrorMessage.HTTP_START_LINE_BLANK.getMessage());
     }
 
     @DisplayName("메소드와 경로를 올바르게 파싱한다")
@@ -39,6 +39,18 @@ public class HttpRequestTest {
 
         assertThat(request.getMethod()).isEqualTo(httpMethod);
         assertThat(request.getPath()).isEqualTo(path);
+    }
+
+    @DisplayName("유효하지 않은 HTTP Method인 경우 예외가 발생한다")
+    @ParameterizedTest
+    @ValueSource(strings = {"get / HTTP/1.1", "ABC /index.html HTTP/1.1", "POST. / HTTP/1.1"})
+    void HttpRequest_InvalidMethod_ThrowException(String startLine) {
+        String requestString = startLine + "\r\n\r\n";
+        InputStream in = createRequest(requestString);
+
+        assertThatThrownBy(() -> new HttpRequest(in))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ErrorMessage.HTTP_METHOD_INVALID.getMessage());
     }
 
     private InputStream createRequest(String requestString) {
