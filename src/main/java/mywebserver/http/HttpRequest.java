@@ -8,20 +8,12 @@ import java.nio.charset.StandardCharsets;
 import mywebserver.util.ErrorMessage;
 
 public class HttpRequest {
-    private final HttpMethod httpMethod;
-    private final String path;
+    private final HttpStartLine startLine;
 
     public HttpRequest(InputStream inputStream) {
-        try (BufferedReader br = createBufferedReader(inputStream)) {
-            String startLine = br.readLine();
-
-            validateStartLine(startLine);
-
-            String[] tokens = parseStartLine(startLine);
-            this.httpMethod = HttpMethod.from(tokens[0]);
-
-            validatePath(tokens[1]);
-            this.path = tokens[1];
+        try (BufferedReader reader = createBufferedReader(inputStream)) {
+            String line = reader.readLine();
+            this.startLine = new HttpStartLine(line);
         } catch (IOException e) {
             throw new RuntimeException(ErrorMessage.HTTP_REQUEST_FAILED.getMessage(), e);
         }
@@ -31,31 +23,11 @@ public class HttpRequest {
         return new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
     }
 
-    private void validateStartLine(String startLine) {
-        if (startLine == null || startLine.isBlank()) {
-            throw new IllegalArgumentException(ErrorMessage.HTTP_START_LINE_BLANK.getMessage());
-        }
-    }
-
-    private void validatePath(String path) {
-        if (!path.startsWith("/")) {
-            throw new IllegalArgumentException(ErrorMessage.HTTP_PATH_INVALID.getMessage());
-        }
-    }
-
-    private String[] parseStartLine(String startLine) {
-        String[] tokens = startLine.split(" ");
-        if (tokens.length < 2) {
-            throw new IllegalArgumentException(ErrorMessage.HTTP_START_LINE_INCORRECT.getMessage());
-        }
-        return tokens;
-    }
-
     public String getMethod() {
-        return httpMethod.name();
+        return startLine.getMethod();
     }
 
     public String getPath() {
-        return path;
+        return startLine.getPath();
     }
 }
