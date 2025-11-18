@@ -9,11 +9,13 @@ import mywebserver.util.ErrorMessage;
 
 public class HttpRequest {
     private final HttpStartLine startLine;
+    private final HttpHeaders headers;
 
     public HttpRequest(InputStream inputStream) {
         try (BufferedReader reader = createBufferedReader(inputStream)) {
             String line = reader.readLine();
             this.startLine = new HttpStartLine(line);
+            this.headers = new HttpHeaders(reader);
         } catch (IOException e) {
             throw new RuntimeException(ErrorMessage.HTTP_REQUEST_FAILED.getMessage(), e);
         }
@@ -29,5 +31,9 @@ public class HttpRequest {
 
     public String getPath() {
         return startLine.getPath();
+    }
+
+    public String getHeader(String key) {
+        return headers.get(key);
     }
 }
