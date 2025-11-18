@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import mywebserver.util.ErrorMessage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -63,6 +64,21 @@ public class HttpRequestTest {
         assertThatThrownBy(() -> new HttpRequest(in))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(ErrorMessage.HTTP_PATH_INVALID.getMessage());
+    }
+
+    @DisplayName("HTTP 헤더를 올바르게 파싱하여 key:value 형태로 저장한다. 이후 key를 통해 value를 받아온다.")
+    @Test
+    void HttpRequest_ParseHeaders_ReturnsHeaderValues() {
+        String requestString = "GET /index.html HTTP/1.1\r\n" +
+                "Host: localhost:8080\r\n" +
+                "User-Agent: my-test-client\r\n" +
+                "\r\n";
+        InputStream in = createRequest(requestString);
+
+        HttpRequest request = new HttpRequest(in);
+
+        assertThat(request.getHeader("Host")).isEqualTo("localhost:8080");
+        assertThat(request.getHeader("User-Agent")).isEqualTo("my-test-client");
     }
 
     private InputStream createRequest(String requestString) {
