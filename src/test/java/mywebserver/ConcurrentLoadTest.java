@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// 반드시 Application.java를 실행 후 테스트 해주세요.
 public class ConcurrentLoadTest {
 
     private static final String SERVER_HOST = "localhost";
