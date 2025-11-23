@@ -8,6 +8,8 @@ public enum ErrorMessage {
     HTTP_REQUEST_FAILED("HTTP 요청 실패"),
     HTTP_HEADER_PARSING_ERROR("헤더 파싱 중 오류"),
 
+    SERVER_START_FAILED("서버 시작 중 오류가 발생했습니다."),
+    CLIENT_CONNECTION_FAILED("클라이언트 연결을 실패했습니다."),
     REQUEST_PROCESSING_FAILED("요청 처리 중 오류가 발생했습니다.");
 
     private final String message;
