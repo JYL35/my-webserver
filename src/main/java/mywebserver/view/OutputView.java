@@ -7,7 +7,7 @@ public class OutputView {
         printMessage("http://localhost:" + port + " 로 접속해 보세요.");
     }
 
-    public void printException(String message, Exception e) {
+    public static void printException(String message, Exception e) {
         System.err.println(message + ": " + e.getMessage());
     }
 

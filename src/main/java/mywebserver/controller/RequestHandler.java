@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import mywebserver.http.HttpMethod;
 import mywebserver.http.HttpRequest;
 import mywebserver.http.HttpResponse;
+import mywebserver.util.ErrorMessage;
+import mywebserver.view.OutputView;
 
 public class RequestHandler implements Runnable {
     private final InputStream inputStream;
@@ -26,7 +28,7 @@ public class RequestHandler implements Runnable {
 
             requestRouting(request, response);
         } catch (Exception e) {
-            System.out.println("요청 처리 중 오류 발생: " + e.getMessage());
+            OutputView.printException(ErrorMessage.REQUEST_PROCESSING_FAILED.getMessage(), e);
         }
     }
 
