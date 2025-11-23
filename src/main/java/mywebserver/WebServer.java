@@ -40,6 +40,8 @@ public class WebServer {
                     connection.getInputStream(),
                     connection.getOutputStream()
             );
+
+            new Thread(requestHandler).start();
         } catch (IOException e) {
             OutputView.printException(ErrorMessage.CLIENT_CONNECTION_FAILED.getMessage(), e);
         }

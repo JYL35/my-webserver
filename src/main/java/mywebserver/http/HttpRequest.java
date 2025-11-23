@@ -12,7 +12,8 @@ public class HttpRequest {
     private final HttpHeaders headers;
 
     public HttpRequest(InputStream inputStream) {
-        try (BufferedReader reader = createBufferedReader(inputStream)) {
+        try {
+            BufferedReader reader = createBufferedReader(inputStream);
             String line = reader.readLine();
             this.startLine = new HttpStartLine(line);
             this.headers = new HttpHeaders(reader);
