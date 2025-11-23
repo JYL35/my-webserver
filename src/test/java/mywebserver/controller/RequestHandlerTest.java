@@ -16,10 +16,12 @@ public class RequestHandlerTest {
     @DisplayName("요청에 따라 라우팅하여 올바른 응답을 반환한다")
     @ParameterizedTest
     @CsvSource({
-            "GET / HTTP/1.1\r\nHost: localhost\r\n\r\n, HTTP/1.1 200 OK, <h1>Hello World</h1>",
-            "GET /abc HTTP/1.1\r\nHost: localhost\r\n\r\n, HTTP/1.1 404 Not Found, <h1>404 Not Found</h1>"
+            "GET / HTTP/1.1, 200 OK, <h1>Hello World</h1>",
+            "GET /abc HTTP/1.1, 404 Not Found, <h1>404 Not Found</h1>"
     })
-    void RequestHandler_RoutingToRequest_ReturnsResponse(String requestString, String startLine, String expected) {
+    void RequestHandler_RoutingToRequest_ReturnsResponse(String startLine, String expectedStatus, String expectedBody) {
+        String requestString = startLine + "\r\nHost: localhost\r\n\r\n";
+
         InputStream in = new ByteArrayInputStream(requestString.getBytes(StandardCharsets.UTF_8));
         OutputStream out = new ByteArrayOutputStream();
 
@@ -27,7 +29,7 @@ public class RequestHandlerTest {
         requestHandler.run();
 
         String response = out.toString();
-        assertThat(response).contains(startLine);
-        assertThat(response).contains(expected);
+        assertThat(response).contains("HTTP/1.1 " + expectedStatus);
+        assertThat(response).contains(expectedBody);
     }
 }

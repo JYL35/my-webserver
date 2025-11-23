@@ -36,8 +36,8 @@ public class HttpStartLine {
         return tokens;
     }
 
-    public String getMethod() {
-        return httpMethod.name();
+    public HttpMethod getMethod() {
+        return httpMethod;
     }
 
     public String getPath() {

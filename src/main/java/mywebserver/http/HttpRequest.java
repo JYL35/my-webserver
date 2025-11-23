@@ -25,7 +25,7 @@ public class HttpRequest {
         return new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
     }
 
-    public String getMethod() {
+    public HttpMethod getMethod() {
         return startLine.getMethod();
     }
 
