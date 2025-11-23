@@ -32,7 +32,7 @@ public class HttpRequestTest {
             "GET /index.html HTTP/1.1, GET, /index.html",
             "POST / HTTP/1.1, POST, /"
     })
-    void HttpRequest_ParseStartLine_ReturnsMethodAndPath(String startLine, String httpMethod, String path) {
+    void HttpRequest_ParseStartLine_ReturnsMethodAndPath(String startLine, HttpMethod httpMethod, String path) {
         String requestString = startLine + "\r\n" + "Host: localhost:8080\r\n" + "\r\n";
         InputStream in = createRequest(requestString);
 
