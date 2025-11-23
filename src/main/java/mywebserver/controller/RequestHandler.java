@@ -22,9 +22,9 @@ public class RequestHandler implements Runnable {
 
     @Override
     public void run() {
-        try {
-            HttpRequest request = new HttpRequest(inputStream);
-            HttpResponse response = new HttpResponse(outputStream);
+        try (InputStream in = inputStream; OutputStream out = outputStream){
+            HttpRequest request = new HttpRequest(in);
+            HttpResponse response = new HttpResponse(out);
 
             requestRouting(request, response);
         } catch (Exception e) {
