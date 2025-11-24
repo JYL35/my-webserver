@@ -1,4 +1,9 @@
-# 나만의 웹서버 만들기
+# 나만의 웹 서버 만들기
+
+## 🔗 링크
+**블로그** : https://velog.io/@dlwodbs1223/woowacourse-precourse-open-mission
+
+**노션** : https://www.notion.so/2b5803528be780029eefd8e5fd3a2298?source=copy_link
 
 ## 📌 설명
 이 프로젝트는 Java의 Socket API만을 사용하여, SpringBoot나 Tomcat 같은 
@@ -68,7 +73,7 @@ src\main\java\mywebserver
 
 ## 🏃 실행 방법
 1. Application.main()을 실행합니다.
-2. http://localhost:8080에 접속합니다.
+2. http://localhost:8080 에 접속합니다.
 3. `Hello World` 문구가 잘 나오는지 확인합니다.
 4. http://localhost:8080/index.html 에 접속합니다.
 5. `Hello File` 문구가 잘 나오는지 확인합니다.
