@@ -36,8 +36,8 @@ Client  ->  WebServer (Port 8080)
                 ↓
            (Thread Pool)
                 ↓
-           RequestHandler  (Controller)
-             ↙        ↘
+           RequestHandler (Controller)
+            ↙        ↘
      HttpRequest    HttpResponse
 ```
 
@@ -50,25 +50,46 @@ Client  ->  WebServer (Port 8080)
 
 ## 🗂️ 파일 구조
 ```
-src\main\java\mywebserver
-│  Application.java
-│  WebServer.java
+src
+├─main
+│  ├─java
+│  │  └─mywebserver
+│  │      │  Application.java
+│  │      │  WebServer.java
+│  │      │
+│  │      ├─controller
+│  │      │      RequestHandler.java
+│  │      │
+│  │      ├─http
+│  │      │      HttpHeaders.java
+│  │      │      HttpMethod.java
+│  │      │      HttpRequest.java
+│  │      │      HttpResponse.java
+│  │      │      HttpStartLine.java
+│  │      │
+│  │      ├─util
+│  │      │      ErrorMessage.java
+│  │      │
+│  │      └─view
+│  │              OutputView.java
+│  │
+│  └─resources
+│      └─static
+│              index.html
 │
-├─controller
-│      RequestHandler.java
-│
-├─http
-│      HttpHeaders.java
-│      HttpMethod.java
-│      HttpRequest.java
-│      HttpResponse.java
-│      HttpStartLine.java
-│
-├─util
-│      ErrorMessage.java
-│
-└─view
-       OutputView.java
+└─test
+    └─java
+        └─mywebserver
+            │  ConcurrentLoadTest.java
+            │
+            ├─controller
+            │      RequestHandlerTest.java
+            │
+            └─http
+                    HttpHeadersTest.java
+                    HttpRequestTest.java
+                    HttpResponseTest.java
+
 ```
 
 ## 🏃 실행 방법
@@ -106,15 +127,15 @@ HttpHeaders, HttpRequest, HttpResponse, RequestHandler의 로직을 TDD로 검�
 - 동시 접속: 20명의 사용자가 동시에 요청을 시도합니다.
 - 총 요청: 총 100개의 HTTP GET 요청을 보냅니다.
 - 검증 항목:
-  - 모든 요청에 대해 200 OK 응답을 받았는가?
-  - 스레드 풀이 설정된 최대 개수(50개)를 넘지 않고 재사용되었는가?
+  - 모든 요청에 대해 `200 OK` 응답을 받았는가?
+  - 동시 접속 상황에서도 서버가 중단되거나 에러가 발생하지 않는가?
 
 #### 실행 결과 예시
 ```
 ========================================
 부하 테스트 결과 리포트
 ========================================
-총 소요 시간    : 352 ms
+총 소요 시간    : 141 ms
 성공 요청       : 100
 실패 요청       : 0
 ========================================
