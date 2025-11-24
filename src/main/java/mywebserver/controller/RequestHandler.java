@@ -22,7 +22,7 @@ public class RequestHandler implements Runnable {
 
     @Override
     public void run() {
-        try (InputStream in = inputStream; OutputStream out = outputStream){
+        try (InputStream in = inputStream; OutputStream out = outputStream) {
             HttpRequest request = new HttpRequest(in);
             HttpResponse response = new HttpResponse(out);
 

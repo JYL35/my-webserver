@@ -23,7 +23,7 @@ public class HttpHeaders {
         String line;
         while ((line = reader.readLine()) != null && !line.isBlank()) {
             String[] tokens = line.split(": ", 2);
-            headers.put(tokens[0],tokens[1]);
+            headers.put(tokens[0], tokens[1]);
         }
     }
 
