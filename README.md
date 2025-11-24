@@ -29,6 +29,64 @@
 - [x] 에러 처리 : 잘못된 요청 및 존재하지 않는 파일에 대한 `404 Not Found` 처리 
 - [x] 멀티스레드 처리 : `ExecutorService`를 활용한 스레드 풀 적용
 
+## 📜 상세 구현 기능 목록
+### 웹 서버 인프라 (Infrastructure)
+
+- TCP 소켓 서버 구동
+  - ServerSocket을 사용하여 8080 포트 바인딩 및 연결 대기
+  - 클라이언트 연결 시 접속 정보(IP) 로깅
+
+- 동시성 제어 (Concurrency)
+  - ExecutorService를 사용한 스레드 풀 구현
+  - 동시 접속 처리를 위한 스레드 개수 제한
+  - 서버 종료 시 스레드 풀 자원 해제
+
+### HTTP 프로토콜 처리 (HTTP Protocol)
+
+- HTTP 요청(Request) 파싱
+  - InputStream을 통해 들어오는 바이트 데이터를 문자열로 변환
+  - Start Line 파싱: HTTP Method(GET 등), URL Path, Version 추출 및 검증
+  - Header 파싱: 빈 줄이 나올 때까지 헤더를 읽어 Map으로 저장
+  - 유효하지 않은 요청(null, empty, 잘못된 포맷)에 대한 예외 처리
+
+- HTTP 응답(Response) 생성
+  - 상태 코드(200, 404)에 따른 Status Line 생성
+  - Content-Type, Content-Length 등 필수 헤더 설정
+  - HTML 본문(Body) 데이터 처리 및 전송
+
+### 요청 처리 및 라우팅 (Controller)
+
+- 프론트 컨트롤러 패턴 적용 (RequestHandler)
+  - 모든 요청을 받아 적절한 로직으로 분기 처리
+
+- URL 기반 라우팅
+  - GET / 요청 시 "Hello World" 동적 HTML 응답
+  - 존재하지 않는 경로 요청 시 404 Not Found 페이지 응답
+
+- 정적 파일 서빙 (Static File Serving)
+  - 요청 경로가 .html로 끝날 경우 src/main/resources/static 경로 탐색
+  - 파일 존재 시 해당 파일 내용을 읽어 응답 본문에 포함
+  - 파일 미존재 시 404 응답 처리
+
+### 안정성 및 유틸리티 (Stability & Utils)
+
+- 리소스 관리
+  - try-with-resources를 활용하여 응답 전송 후 Socket 및 I/O Stream 자동 종료
+  - 예외 처리 및 로깅
+  - OutputView를 통한 서버 상태 및 에러 로그 출력 분리
+  - 커스텀 예외 메시지(ErrorMessage) 상수화 관리
+
+### 테스트 및 검증 (Testing)
+- 단위 테스트 (Unit Test)
+  - HttpRequest 파싱 로직 검증 (StartLine, Header)
+  - HttpResponse 응답 포맷 검증
+  - RequestHandler 라우팅 및 파일 서빙 로직 검증
+
+- 부하 테스트 도구 구현 (Load Test)
+  - ConcurrentLoadTest 클래스 자체 구현
+  - CountDownLatch를 활용한 동시 접속 시나리오(20명) 재현
+  - 응답 성공률 및 서버 안정성 검증 리포트 출력
+
 ## 🔄 흐름
 MVC 패턴과 유사한 구조로 역할을 분리하여 설계했습니다.
 ```
